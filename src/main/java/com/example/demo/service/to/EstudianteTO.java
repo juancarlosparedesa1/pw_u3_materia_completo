@@ -1,7 +1,6 @@
 package com.example.demo.service.to;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
 
 import org.springframework.hateoas.RepresentationModel;
 
@@ -13,19 +12,20 @@ public class EstudianteTO extends RepresentationModel<EstudianteTO> implements S
 	private static final long serialVersionUID = -1615634884916396602L;
 
 	private Integer id;
+	private String cedula;
 
 	private String nombre;
 
 	private String apellido;
 
-	//private LocalDateTime fechaNacimiento;
+	// private LocalDateTime fechaNacimiento;
 
 	private String carrera;
-	
+
 	private String genero;
 
 	// con hateoas no se pone
-	//private List<MateriaTO> materias;
+	// private List<MateriaTO> materias;
 	// SET Y GET
 
 	public Integer getId() {
@@ -38,6 +38,14 @@ public class EstudianteTO extends RepresentationModel<EstudianteTO> implements S
 
 	public String getNombre() {
 		return nombre;
+	}
+
+	public String getCedula() {
+		return cedula;
+	}
+
+	public void setCedula(String cedula) {
+		this.cedula = cedula;
 	}
 
 	public void setNombre(String nombre) {

@@ -18,6 +18,12 @@ public class EstudianteRepositoryImpl implements IEstudianteRepository {
 	@PersistenceContext
 	private EntityManager entityManager;
 
+//	@Override
+//	public void insertar(Estudiante estudiante) {
+//		// TODO Auto-generated method stub
+//		this.entityManager.persist(estudiante);
+//	}
+	// conexion frontend
 	@Override
 	public void insertar(Estudiante estudiante) {
 		// TODO Auto-generated method stub
@@ -30,11 +36,18 @@ public class EstudianteRepositoryImpl implements IEstudianteRepository {
 		return this.entityManager.find(Estudiante.class, id);
 	}
 
+//	@Override
+//	public void actualizar(Estudiante estudiante) {
+//		// TODO Auto-generated method stub
+//		this.entityManager.merge(estudiante);
+//
+//	}
+
+	// conexion frontend
 	@Override
 	public void actualizar(Estudiante estudiante) {
 		// TODO Auto-generated method stub
 		this.entityManager.merge(estudiante);
-
 	}
 
 	@Override
@@ -58,6 +71,23 @@ public class EstudianteRepositoryImpl implements IEstudianteRepository {
 		TypedQuery<Estudiante> myQuery = this.entityManager.createQuery("SELECT e FROM Estudiante e", Estudiante.class);
 
 		return myQuery.getResultList();
+	}
+
+	// conectar back-frontend
+	@Override
+	public Estudiante seleccionarPorCedula(String cedula) {
+		// TODO Auto-generated method stub
+		TypedQuery<Estudiante> myQuery = this.entityManager
+				.createQuery("SELECT e FROM Estudiante e WHERE e.cedula=:cedula", Estudiante.class);
+		myQuery.setParameter("cedula", cedula);
+		return myQuery.getSingleResult();
+	}
+
+	@Override
+	public void eliminarPorCedula(String cedula) {
+		Estudiante estu = this.seleccionarPorCedula(cedula);
+		this.entityManager.remove(estu);
+
 	}
 
 }

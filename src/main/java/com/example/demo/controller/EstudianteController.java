@@ -9,8 +9,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.Link;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -30,6 +32,7 @@ import com.example.demo.service.to.MateriaTO;
 
 @RestController
 @RequestMapping(path = "/estudiantes")
+@CrossOrigin
 public class EstudianteController {
 
 	@Autowired
@@ -39,7 +42,7 @@ public class EstudianteController {
 
 	// cudr orden jerarquico
 
-	// *******GUARDAR************
+	// *******GUARDAR************INGRESAR
 	// URL NIVEL0:http://localhost:8080/API/v1.0/Matricula/estudiantes/guardar
 	// URL NIVEL1:http://localhost:8080/API/v1.0/Matricula/estudiantes
 	// @PostMapping(path = "/guardar") //NIVEL0
@@ -49,7 +52,7 @@ public class EstudianteController {
 	// public ResponseEntity<Estudiante> guardar(@RequestBody Estudiante estudiante)
 	// {// capacidades-codigos personalizados
 //	public ResponseEntity<Estudiante> guardar(@RequestBody Estudiante estudiante) {// MEDIATYPE
-	public ResponseEntity<EstudianteTO> guardar(@RequestBody EstudianteTO estudianteTo) {// hateoas
+	public ResponseEntity<EstudianteTO> guardar(@RequestBody EstudianteTO estudianteTo) {// hateoas-conexion frontend
 
 		// RE
 		// comento porque estos verbos utilizan en @RequestBody
@@ -69,20 +72,23 @@ public class EstudianteController {
 	// 0:http://localhost:8080/API/v1.0/Matricula/estudiantes/actualizar
 	// URL NIVEL 1:http://localhost:8080/API/v1.0/Matricula/estudiantes/1
 	// @PutMapping(path = "/actualizar")
-	@PutMapping("/{id}")
+	// @PutMapping("/{id}")
 //	public void actualizar(@RequestBody Estudiante estudiante, @PathVariable Integer id) {
-	public ResponseEntity<Estudiante> actualizar(@RequestBody Estudiante estudiante, @PathVariable Integer id) {// capacidades-codigos
-																												// personalizados
-		estudiante.setId(id);// NIVEL 1 EL ID YA NO VIENE EN EL BODY COMO NIVEL 0
-		/*
-		 * Estudiante estu = this.estudianteService.buscar(1);
-		 * estu.setNombre("Jose David"); estu.setApellido("Garcia");
-		 * estu.setFechaNacimiento(LocalDateTime.of(2022, 05, 07, 0, 0));
-		 * estu.setGenero("M");
-		 */
-		this.estudianteService.actualizar(estudiante);
-		return ResponseEntity.status(238).body(estudiante);
-	}
+
+	// comento porque da choque con otro metodo del frontend
+//	public ResponseEntity<Estudiante> actualizar(@RequestBody Estudiante estudiante, @PathVariable Integer id) {// capacidades-codigos
+//																												// personalizados
+//		// comento no de error conectar frontend-da error con id porque ya uso cedula
+//		// estudiante.setId(id);// NIVEL 1 EL ID YA NO VIENE EN EL BODY COMO NIVEL 0
+//		/*
+//		 * Estudiante estu = this.estudianteService.buscar(1);
+//		 * estu.setNombre("Jose David"); estu.setApellido("Garcia");
+//		 * estu.setFechaNacimiento(LocalDateTime.of(2022, 05, 07, 0, 0));
+//		 * estu.setGenero("M");
+//		 */
+//		this.estudianteService.actualizar(estudiante);
+//		return ResponseEntity.status(238).body(estudiante);
+//	}
 
 	// *******ACTUALIZARPARCIAL PATCH************
 	// URL BASICO NIVEL
@@ -91,37 +97,39 @@ public class EstudianteController {
 	// @PatchMapping(path = "/actualizarParcial") //NIVEL 0
 	@PatchMapping(path = "/{id}") // NIVEL 1
 //	public void actualizaParcial(@RequestBody Estudiante estudiante, @PathVariable Integer id) {
-	public ResponseEntity<Estudiante> actualizaParcial(@RequestBody Estudiante estudiante, @PathVariable Integer id) {
-		estudiante.setId(id);// seteado en el atributo
-		// COMENTO POR QUE VOY A USAR EL REQUESTBODY
-		/*
-		 * Estudiante estu = this.estudianteService.buscar(1);
-		 * estu.setNombre("Jose David"); estu.setApellido("Zambrano");
-		 */
-		// ESTO HAGO PARA SIN DEJAR DE UTILIZAR EL MERGE ME ACTUALICE EL DATO QUE
-		// NECESITO
-		// UTILIZANDO UNA CONDICIÓN.
-//		1.mando a buscar
-		Estudiante estudiante2 = this.estudianteService.buscar(estudiante.getId());// mando a buscar
-//		2.setear cuando si venga el dato
-		if (estudiante.getNombre() != null) {
-			estudiante2.setNombre(estudiante.getNombre());
-		}
-		if (estudiante.getApellido() != null) {
-			estudiante2.setApellido(estudiante.getApellido());
-		}
-//		if (estudiante.getFechaNacimiento() != null) {
-//			estudiante2.setFechaNacimiento(estudiante.getFechaNacimiento());
+//	public ResponseEntity<Estudiante> actualizaParcial(@RequestBody Estudiante estudiante, @PathVariable Integer id) {
+//		
+//		
+//		estudiante.setId(id);// seteado en el atributo
+//		// COMENTO POR QUE VOY A USAR EL REQUESTBODY
+//		/*
+//		 * Estudiante estu = this.estudianteService.buscar(1);
+//		 * estu.setNombre("Jose David"); estu.setApellido("Zambrano");
+//		 */
+//		// ESTO HAGO PARA SIN DEJAR DE UTILIZAR EL MERGE ME ACTUALICE EL DATO QUE
+//		// NECESITO
+//		// UTILIZANDO UNA CONDICIÓN.
+////		1.mando a buscar
+//		Estudiante estudiante2 = this.estudianteService.buscar(estudiante.getId());// mando a buscar
+////		2.setear cuando si venga el dato
+//		if (estudiante.getNombre() != null) {
+//			estudiante2.setNombre(estudiante.getNombre());
 //		}
-		if (estudiante.getCarrera() != null) {
-			estudiante2.setCarrera(estudiante.getCarrera());
-		}
-		if (estudiante.getGenero() != null) {
-			estudiante2.setGenero(estudiante.getGenero());
-		}
-		this.estudianteService.actualizar(estudiante2);
-		return ResponseEntity.status(239).body(estudiante2);
-	}
+//		if (estudiante.getApellido() != null) {
+//			estudiante2.setApellido(estudiante.getApellido());
+//		}
+////		if (estudiante.getFechaNacimiento() != null) {
+////			estudiante2.setFechaNacimiento(estudiante.getFechaNacimiento());
+////		}
+//		if (estudiante.getCarrera() != null) {
+//			estudiante2.setCarrera(estudiante.getCarrera());
+//		}
+//		if (estudiante.getGenero() != null) {
+//			estudiante2.setGenero(estudiante.getGenero());
+//		}
+//		this.estudianteService.actualizar(estudiante2);
+//		return ResponseEntity.status(239).body(estudiante2);
+//	}
 
 //	**********BORRAR***************
 	// URL NIVEL 0
@@ -139,13 +147,15 @@ public class EstudianteController {
 //	@DeleteMapping(path = "/borrar/{id}") //NIVEL 0
 	@DeleteMapping(path = "/{id}") // NIVEL 1
 //	public void borrar(@PathVariable Integer id) {
-	public ResponseEntity<String> borrar(@PathVariable Integer id) {// capacidad-codigos personalizados
-		// comento porque esto es basico y no es correcto hacerlo asi debe ser
-		// variaalbel el path
-		// this.estudianteService.borrar(1);
-		this.estudianteService.borrar(id);
-		return ResponseEntity.status(240).body("Estudiante borrado!");
-	}
+
+	// comento para realizar otro y conectar con el backend
+//	public ResponseEntity<String> borrar(@PathVariable Integer id) {// capacidad-codigos personalizados
+//		// comento porque esto es basico y no es correcto hacerlo asi debe ser
+//		// variaalbel el path
+//		// this.estudianteService.borrar(1);
+//		this.estudianteService.borrar(id);
+//		return ResponseEntity.status(240).body("Estudiante borrado!");
+//	}
 
 	// *************BUSCAR*************GET
 	// URL NIVEL 0
@@ -296,12 +306,41 @@ public class EstudianteController {
 
 		// con un for voy añadiendo el link a los estudiantes
 		for (EstudianteTO estudianteTO : lista) {
-			estudianteTO.add(
-					linkTo(methodOn(EstudianteController.class).buscarMateriasPorIdEstudiante(estudianteTO.getId()))
-							.withRel("sus materias"));
+//			estudianteTO.add(
+//					linkTo(methodOn(EstudianteController.class).buscarMateriasPorIdEstudiante(estudianteTO.getId()))
+//							.withRel("sus materias"));
 		}
 
 		return lista;
+
+	}
+
+	// conectar frontend metodo buscaEstudiantePorCedula
+	// URL:http://localhost:8080/API/v1.0/Matricula/estudiantes/1726897299/buscarPorCedula
+	@GetMapping(path = "/{cedula}/buscarPorCedula", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<EstudianteTO> buscarPorCedulaEstudiante(@PathVariable String cedula) {
+		return ResponseEntity.status(HttpStatus.OK).body(this.estudianteService.buscarPorCedula(cedula));
+
+	}
+
+	// conectar frontend metodo actualizarEstudiante
+	// URL:
+	// http://localhost:8080/API/v1.0/Matricula/estudiantes/122/actualizarPorCedula
+	@PutMapping(path = "/{cedula}/actualizarPorCedula", consumes = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<EstudianteTO> actualizarPorCedula(@RequestBody EstudianteTO estudianteTo,
+			@PathVariable String cedula) {
+		estudianteTo.setCedula(cedula);
+		this.estudianteService.actualizarPorCedula(estudianteTo, cedula);
+		return ResponseEntity.status(HttpStatus.OK).body(estudianteTo);
+
+	}
+
+	// capacidad Eliminar
+//	URL: http://localhost:8080/API/v1.0/Matricula/estudiantes/1
+	@DeleteMapping(path = "/{cedula}")
+	public ResponseEntity<String> eliminarPorCedula(@PathVariable String cedula) {
+		this.estudianteService.borrarPorCedula(cedula);
+		return ResponseEntity.status(HttpStatus.OK).body("Estudiante eliminado correctamente");
 
 	}
 

@@ -27,6 +27,9 @@ public class Estudiante {
 
 	@Column(name = "estu_id")
 	private Integer id;
+	// conexion backend trabajamos con cedula
+	@Column(name = "estu_cedula")
+	private String cedula;
 	@Column(name = "estu_nombre")
 	private String nombre;
 	@Column(name = "estu_apellido")
@@ -43,16 +46,24 @@ public class Estudiante {
 
 	// SET Y GET
 
-	public Integer getId() {
-		return id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
-	}
+//	public Integer getId() {
+//		return id;
+//	}
+//
+//	public void setId(Integer id) {
+//		this.id = id;
+//	}
 
 	public String getNombre() {
 		return nombre;
+	}
+
+	public String getCedula() {
+		return cedula;
+	}
+
+	public void setCedula(String cedula) {
+		this.cedula = cedula;
 	}
 
 	public void setNombre(String nombre) {

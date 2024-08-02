@@ -7,12 +7,14 @@ import com.example.demo.service.to.EstudianteTO;
 
 public interface IEstudianteService {
 
-	public void ingresar(Estudiante estudiante);
-	// public void ingresar(EstudianteTO estudianteTo); conexion con backend
+	// public void ingresar(Estudiante estudiante);
+	public void ingresar(EstudianteTO estudianteTo);// conexion con frontend
 
 	public Estudiante buscar(Integer id);
 
-	public void actualizar(Estudiante estudiante);
+//	public void actualizar(Estudiante estudiante);
+	// actualizar
+	public void actualizarPorCedula(EstudianteTO estudianteTO, String cedula);
 
 	public void borrar(Integer id);
 
@@ -24,4 +26,9 @@ public interface IEstudianteService {
 	// buscarTodoshateoas
 	public List<EstudianteTO> buscarTodosHateoas();
 
+	// metodo conexion con el frontend
+	// buscarPorCedula
+	public EstudianteTO buscarPorCedula(String cedula);
+
+	public void borrarPorCedula(String Cedula);
 }
